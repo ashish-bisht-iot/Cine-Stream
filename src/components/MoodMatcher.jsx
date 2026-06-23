@@ -62,7 +62,7 @@ function MoodMatcher({ onResult }) {
 
   return (
     <div className="mood-matcher">
-      <h3>🎭 Mood Matcher</h3>
+      <h3>Mood Matcher</h3>
       <p className="mood-subtitle">Tell us how you're feeling, get a movie pick</p>
       <form onSubmit={handleSubmit} className="mood-form">
         <input

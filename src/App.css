@@ -15,11 +15,6 @@
   padding: 1.1rem 2rem 0.9rem;
   background: var(--surface);
   border-bottom: 3px solid var(--bg);
-  background-image: radial-gradient(circle, var(--bg) 5px, transparent 5px);
-  background-size: 22px 100%;
-  background-position: bottom;
-  background-repeat: repeat-x;
-  padding-bottom: 1.1rem;
 }
 
 .nav-logo {

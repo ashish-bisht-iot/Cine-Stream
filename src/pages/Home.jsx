@@ -74,7 +74,7 @@ function Home() {
   return (
     <div className="home-page">
       <header className="hero">
-        <h1>🎬 Cine-Stream</h1>
+        <h1>Cine-Stream</h1>
         <p>Discover your next favorite movie</p>
         <SearchBar
           value={searchQuery}
