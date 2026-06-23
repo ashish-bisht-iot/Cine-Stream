@@ -42,8 +42,6 @@ function MoodMatcher({ onResult }) {
       const groqData = await groqRes.json();
       const rawTitle = groqData.choices[0].message.content;
       const cleanTitle = rawTitle.trim().replace(/^["']|["']$/g, "");
-
-      // hand that title off to tmdb search
       const tmdbData = await searchMovies(cleanTitle);
 
       if (tmdbData.results && tmdbData.results.length > 0) {
@@ -53,7 +51,7 @@ function MoodMatcher({ onResult }) {
       }
     } catch (err) {
       console.log("mood matcher error", err);
-      setError("Something went wrong matching your mood. Try again?");
+      setError("Something went wrong. Try again?");
     } finally {
       setLoading(false);
     }
@@ -62,7 +60,7 @@ function MoodMatcher({ onResult }) {
   return (
     <div className="mood-matcher">
       <h3>Mood Matcher</h3>
-      <p className="mood-subtitle">Tell us how you're feeling, get a movie pick</p>
+      <p className="mood-subtitle">How are you feeling? Get a movie recommendation</p>
       <form onSubmit={handleSubmit} className="mood-form">
         <input
           type="text"
