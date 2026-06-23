@@ -12,7 +12,6 @@ const tmdb = axios.create({
 
 export const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 
-// gets popular movies, page based
 export async function fetchPopularMovies(page = 1) {
   const res = await tmdb.get("/movie/popular", {
     params: { page },
@@ -20,7 +19,6 @@ export async function fetchPopularMovies(page = 1) {
   return res.data;
 }
 
-// search movies by query
 export async function searchMovies(query, page = 1) {
   const res = await tmdb.get("/search/movie", {
     params: { query, page },

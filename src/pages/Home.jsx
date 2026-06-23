@@ -17,7 +17,6 @@ function Home() {
 
   const debouncedSearch = useDebounce(searchQuery, 500);
 
-  // load movies whenever page changes, or when search term changes (resets to page 1)
   useEffect(() => {
     let active = true;
 
@@ -51,10 +50,9 @@ function Home() {
     return () => {
       active = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [page, debouncedSearch]);
 
-  // whenever the search term changes, reset back to page 1
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch]);
