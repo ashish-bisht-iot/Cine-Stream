@@ -16,7 +16,7 @@ function MoodMatcher({ onResult }) {
     setError("");
 
     try {
-      // step 1 - ask groq/llama for a movie title based on mood
+      // ask groq for a movie title based on mood
       const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -41,10 +41,9 @@ function MoodMatcher({ onResult }) {
 
       const groqData = await groqRes.json();
       const rawTitle = groqData.choices[0].message.content;
-      // sanitize - sometimes the model wraps it in quotes anyway
       const cleanTitle = rawTitle.trim().replace(/^["']|["']$/g, "");
 
-      // step 2 - hand that title off to tmdb search
+      // hand that title off to tmdb search
       const tmdbData = await searchMovies(cleanTitle);
 
       if (tmdbData.results && tmdbData.results.length > 0) {
@@ -69,7 +68,7 @@ function MoodMatcher({ onResult }) {
           type="text"
           value={moodText}
           onChange={(e) => setMoodText(e.target.value)}
-          placeholder="e.g. feeling sad but want something action packed"
+          placeholder="e.g. Feeling down, want to watch a romance movie"
           className="mood-input"
         />
         <button type="submit" disabled={loading} className="mood-submit-btn">

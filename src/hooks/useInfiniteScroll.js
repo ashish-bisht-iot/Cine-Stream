@@ -1,7 +1,5 @@
 import { useRef, useCallback } from "react";
 
-// returns a ref callback to attach to the last element in a list.
-// when that element becomes visible, it calls onIntersect (usually loads next page)
 export function useInfiniteScroll(onIntersect, isLoading, hasMore) {
   const observerRef = useRef(null);
 
