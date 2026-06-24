@@ -4,8 +4,6 @@ A Netflix-lite movie discovery SPA built in React + Vite, consuming the TMDB API
 
 ---
 
-## Screenshots
-
 ### Popular Movies Grid
 
 ![Popular Movies](./screenshots/popular-movies.png)
@@ -88,3 +86,4 @@ cine-stream/
 | **Repository** | [github/ashish-bisht-iot/Cine-Stream](https://github.com/ashish-bisht-iot/Cine-Stream) |
 
 <br/>
+
