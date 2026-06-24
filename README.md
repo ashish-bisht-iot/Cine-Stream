@@ -2,15 +2,6 @@
 
 A Netflix-lite movie discovery SPA built in React + Vite, consuming the TMDB API. Built around two core performance patterns — debounced search and infinite scroll — plus an AI mood-to-movie matcher on top.
 
-<br/>
-
-| | |
-|---|---|
-| **Live Demo** | [cine-stream/vercel.app](https://cine-stream-steel.vercel.app/) |
-| **Repository** | [github/ashish-bisht-iot/Cine-Stream](https://github.com/ashish-bisht-iot/Cine-Stream) |
-
-<br/>
-
 ---
 
 ## Screenshots
@@ -88,3 +79,12 @@ cine-stream/
     └── utils/
         └── tmdb.js                   ← axios instance + fetchPopularMovies, searchMovies
 ```
+
+<br/>
+
+| | |
+|---|---|
+| **Live Demo** | [cine-stream/vercel.app](https://cine-stream-steel.vercel.app/) |
+| **Repository** | [github/ashish-bisht-iot/Cine-Stream](https://github.com/ashish-bisht-iot/Cine-Stream) |
+
+<br/>
