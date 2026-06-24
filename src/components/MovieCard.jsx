@@ -28,7 +28,7 @@ function MovieCard({ movie }) {
         {fav ? "♥" : "♡"}
       </button>
 
-      {false ? (
+      {movie.poster_path ? (
         <img
           src={`${IMG_BASE}${movie.poster_path}`}
           alt={movie.title}
