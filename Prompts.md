@@ -1,29 +1,74 @@
-# Prompts.md — AI Debugging Log
+# Prompts.md — Cine-Stream
 
-Documenting where/how I used AI as a pair-programmer for Sprint 08, per the "Learn, Don't Copy" mandate.
+Documents every AI interaction during this project.
 
-## Infinite scroll + IntersectionObserver
+---
 
-Asked Claude to explain how IntersectionObserver works conceptually before writing my own hook — specifically how the disconnect/observe cycle should work when the list re-renders. I wrote `useInfiniteScroll.js` myself but used the explanation to understand why you need to disconnect the old observer before attaching to the new last element, otherwise you get multiple stacked observers firing.
+## day 1 (june 20) - v3 vs v4 token thing
 
-Debug session: my first version kept firing the fetch twice per scroll. Root cause was I wasn't checking `isLoading` inside the callback before re-creating the observer, so it raced. Fixed by guarding the early return.
+i was confused why tmdb gives you two different keys. asked claude what the actual difference was between the old api_key query param and the new v4 read access token. turns out v4 is just meant to go in the Authorization header as a Bearer token instead of being stuck in the url every time. set it once on my axios instance and never had to think about it again:
 
-## Debounce hook
+```js
+const tmdb = axios.create({
+  baseURL: BASE_URL,
+  headers: { Authorization: `Bearer ${token}` },
+});
+```
 
-Used the pattern from Sprint 04 (cover letter app autosave) as a reference for the debounce hook here too, since I'd already learned the timer/cleanup pattern there. Mostly just adapted variable names for movies vs text.
+---
 
-## Mood Matcher / Groq integration
+## day 2 (june 21) - debounce wasn't actually doing anything
 
-Same auth pattern as the cover-letter-generator project from Sprint 04 — reused the fetch structure for the Groq chat completions endpoint. Had to debug why the response sometimes included quotes around the movie title (the model would return `"Inception"` instead of `Inception`), so added a regex strip for leading/trailing quotes.
+built the debounce hook but my search was still firing on every keystroke. took me a bit to realize my mistake - i had the fetch logic watching the raw search input instead of the debounced version. asked claude why this was happening and it clicked once explained that you need the useEffect dependency to be the delayed value, not the live one. typing felt fine because the input itself wasn't debounced, only the part that actually calls the api needed to wait.
 
-Asked AI to explain what `temperature` does in the Groq API params — used 0.7 since I wanted some variation in mood suggestions but not totally random titles.
+```js
+const debouncedSearch = useDebounce(searchQuery, 500);
 
-## TMDB pagination + favorites state bug
+useEffect(() => {
+}, [debouncedSearch]);
+```
 
-Hit a bug where switching from a search query back to the popular movies list didn't reset the page number, so it kept fetching from whatever page I was on in search results. Fixed with a separate useEffect that resets `page` to 1 whenever `debouncedSearch` changes.
+network tab confirmed it after - one request per pause instead of one per letter.
 
-Asked for clarification on why my favorites weren't deduping properly — turned out my reducer was comparing object references instead of `movie.id`, fixed by checking `.find(m => m.id === action.payload.id)`.
+## day 3 (june 22) infinite scroll double firing
 
-## General
+scrolling down sometimes loaded the same page twice, ended up with duplicate movies in the grid. spent a while just adding console.logs trying to figure out where the double call was coming from before asking for help. turns out every re-render was creating a fresh IntersectionObserver without killing the old one, so i had like 2-3 observers all watching the same element. fixed by disconnecting the old one before making a new one, plus added a loading check so it can't fire mid-fetch:
 
-Used AI to sanity check my axios instance setup (Bearer token header syntax) since I'd only used the v3 query-param style key before, not the v4 bearer token. Wrote the actual `tmdb.js` file myself once I understood the difference.
+```js
+if (isLoading) return;
+if (observerRef.current) observerRef.current.disconnect();
+```
+
+the isLoading check ended up being the actual fix, the disconnect alone wasn't enough.
+
+---
+
+## day 4 (june 23) - favorites duplicating
+
+hearting a movie twice (from two different scroll positions where the same movie showed up) added it twice to favorites. realized i was just pushing the object straight into the array without checking if it was already there. fixed with a find check on the id before adding:
+
+```js
+if (state.find((m) => m.id === action.payload.id)) return state;
+```
+
+obvious in hindsight, took embarrassingly long to spot.
+
+### groq returning quoted titles
+
+mood matcher would sometimes break because groq's response came back like `"Inception"` with the quote marks literally included in the string, so tmdb search couldn't find anything matching that exact text. asked why the ai wasn't following my "return only the title" instruction properly - apparently llms don't always follow formatting instructions exactly so you're supposed to clean up the output yourself instead of trusting it blindly. added a regex strip for leading/trailing quotes as a safety net.
+
+```js
+const cleanTitle = rawTitle.trim().replace(/^["']|["']$/g, "");
+```
+
+still not bulletproof if it returns something weirder than quotes but covers the common case.
+
+##  day 5 (june 24) - search reset bug
+
+going from a search back to popular movies kept whatever page number i was on in the search results, so popular movies would start loading from like page 4 instead of page 1. added a separate effect just for resetting the page number whenever the search term changes. could've crammed it into the main fetch effect but kept it separate, easier to read.
+
+```js
+useEffect(() => {
+  setPage(1);
+}, [debouncedSearch]);
+```
