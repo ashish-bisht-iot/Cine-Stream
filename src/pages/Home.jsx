@@ -5,6 +5,7 @@ import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import MovieCard from "../components/MovieCard";
 import SearchBar from "../components/SearchBar";
 import MoodMatcher from "../components/MoodMatcher";
+import PostsSection from "../components/PostsSection";
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -80,6 +81,8 @@ function Home() {
           placeholder="Search for a movie..."
         />
       </header>
+
+      <PostsSection />
 
       <MoodMatcher onResult={handleMoodResult} />
 

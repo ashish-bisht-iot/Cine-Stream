@@ -267,3 +267,120 @@ main {
   }
 }
 
+/* Data Hub Posts Section */
+.posts-section {
+  margin: 2rem 0;
+}
+
+.add-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.add-post-form input,
+.add-post-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-post-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.add-post-form input:focus,
+.add-post-form textarea:focus {
+  border-color: var(--gold);
+}
+
+.add-post-form button {
+  align-self: flex-start;
+  padding: 0.85rem 1.4rem;
+  background: var(--crimson);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-post-form button:hover:not(:disabled) {
+  background: var(--crimson-dim);
+}
+
+.add-post-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.4rem;
+}
+
+.post-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.18s ease;
+}
+
+.post-card:hover {
+  border-color: var(--gold);
+}
+
+.post-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.post-card small {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.post-card button {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--crimson);
+  color: var(--crimson);
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.post-card button:hover {
+  background: var(--crimson);
+  color: var(--text);
+}
