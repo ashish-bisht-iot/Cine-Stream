@@ -60,8 +60,8 @@ cine-stream/
 ├── vite.config.js
 ├── package.json
 ├── .env.example                     ← template for required env vars
-├── Prompts.md                       ← AI debugging log (required)
-├── README.md                        ← this file
+├── Prompts.md
+├── README.md
 └── src/
     ├── main.jsx                     ← entry point, wraps app in Router + FavoritesProvider
     ├── App.jsx                      ← route definitions (/ and /favorites)
