@@ -1,6 +1,6 @@
 # Cine-Stream
 
-A Netflix-lite movie discovery SPA built in React + Vite, consuming the TMDB API. Built around two core performance patterns — debounced search and infinite scroll — plus an AI mood-to-movie matcher on top.
+A Netflix-lite movie discovery SPA built in React + Vite, consuming the TMDB API. Built around two core performance patterns — debounced search and infinite scroll — plus an AI mood-to-movie matcher and a full-stack Data Hub integration on top.
 
 ---
 
@@ -46,6 +46,12 @@ A Netflix-lite movie discovery SPA built in React + Vite, consuming the TMDB API
 
 ---
 
+### Data Hub Posts — Fullstack CRUD + Image Upload
+
+![Data Hub Posts](./screenshots/data-hub-posts.png)
+
+---
+
 ## Project Structure
 
 ```
@@ -65,9 +71,11 @@ cine-stream/
     │   ├── Navbar.jsx                ← top nav, favorites count
     │   ├── SearchBar.jsx             ← controlled search input
     │   ├── MovieCard.jsx             ← poster, title, year, rating, heart button
-    │   └── MoodMatcher.jsx           ← mood input → Groq → TMDB handoff
+    │   ├── MoodMatcher.jsx           ← mood input → Groq → TMDB handoff
+    │   ├── PostCard.jsx              ← single Data Hub post, optional image, delete
+    │   └── PostsSection.jsx          ← fetch/create/delete posts against Data Hub API
     ├── pages/
-    │   ├── Home.jsx                  ← popular/search grid, infinite scroll, mood matcher
+    │   ├── Home.jsx                  ← popular/search grid, infinite scroll, mood matcher, Data Hub posts
     │   └── Favorites.jsx             ← renders favorites from context
     ├── context/
     │   └── FavoritesContext.jsx      ← useReducer + localStorage sync
@@ -80,9 +88,17 @@ cine-stream/
 
 <br/>
 
+## Backend Integration
+
+This app connects to [Data Hub](https://github.com/ashish-bisht-iot/data-hub), a separate Express + MongoDB REST API, via the `VITE_API_URL` environment variable. Locally this points to `http://localhost:5000`; in production it points to the live Render deployment.
+
+<br/>
+
 | | |
 |---|---|
-| **Live Demo** | [cine-stream/vercel.app](https://cine-stream-steel.vercel.app/) |
+| **Live Demo** | [cine-stream-steel.vercel.app](https://cine-stream-steel.vercel.app/) |
 | **Repository** | [github/ashish-bisht-iot/Cine-Stream](https://github.com/ashish-bisht-iot/Cine-Stream) |
+| **Backend Repo** | [github/ashish-bisht-iot/data-hub](https://github.com/ashish-bisht-iot/data-hub) |
+| **Backend Live** | [data-hub-5hv9.onrender.com](https://data-hub-5hv9.onrender.com) |
 
 <br/>
