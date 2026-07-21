@@ -9,6 +9,7 @@ function PostsSection() {
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({ title: "", content: "" });
+  const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
@@ -40,10 +41,17 @@ function PostsSection() {
     setSubmitError(null);
 
     try {
+      const payload = new FormData();
+      payload.append("title", formData.title);
+      payload.append("content", formData.content);
+      payload.append("authorId", DEMO_AUTHOR_ID);
+      if (imageFile) {
+        payload.append("image", imageFile);
+      }
+
       const res = await fetch(`${import.meta.env.VITE_API_URL}/posts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, authorId: DEMO_AUTHOR_ID }),
+        body: payload, // no Content-Type header — browser sets it automatically
       });
 
       if (!res.ok) {
@@ -54,6 +62,7 @@ function PostsSection() {
       const newPost = await res.json();
       setPosts((prev) => [newPost, ...prev]);
       setFormData({ title: "", content: "" });
+      setImageFile(null);
     } catch (err) {
       setSubmitError(err.message);
     } finally {
@@ -94,6 +103,11 @@ function PostsSection() {
           onChange={handleChange}
           placeholder="Write something…"
           required
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
         />
         <button type="submit" disabled={submitting}>
           {submitting ? "Posting…" : "Add Post"}
